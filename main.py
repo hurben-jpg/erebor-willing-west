@@ -409,12 +409,20 @@ async def chat(request: ChatRequest):
 
 @app.get("/status")
 async def status():
+    llm_status = "None"
+    if brain.llm:
+        if hasattr(brain.llm, "model") or hasattr(brain.llm, "model_name"):
+            llm_status = getattr(brain.llm, "model", None) or getattr(brain.llm, "model_name", "Unknown Model")
+        else:
+            llm_status = str(type(brain.llm).__name__)
+            
     return {
         "name": brain.personality.name,
         "address": brain.personality.address,
         "architect": brain.personality.architect,
         "developer": brain.personality.developer,
         "status": brain.personality.config.get("building", {}).get("status", "Under construction"),
+        "llm_loaded": llm_status,
         "sensors": brain.sensors.get_all_readings()
     }
 
