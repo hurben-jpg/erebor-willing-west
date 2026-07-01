@@ -1,0 +1,24 @@
+# Python caches
+__pycache__/
+*.pyc
+
+# Virtual environments
+venv/
+.venv/
+
+# Database files
+chroma_db/
+
+# Local configuration
+.env
+.env.local
+
+# Hardware firmware, demo assets, and ESP32 files
+demo.zip
+demo_extracted/
+ESP32-P4-WIFI6-Touch-LCD-XC-Demo/
+esp-hosted/
+firmware_updater/
+tusb_serial_device/
+.pytest_cache/
+.vscode/

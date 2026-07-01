@@ -1,0 +1,158 @@
+{
+    "building": {
+        "name": "Erebor.West",
+        "address": "141 West Parade, Mt Lawley, WA 6050",
+        "location": {
+            "address": "Mt Lawley, Perth, Western Australia",
+            "coordinates": {
+                "lat": -31.9337,
+                "lon": 115.8732
+            },
+            "timezone": "Australia/Perth"
+        },
+        "description": "A collection of 30 grandly proportioned residences, rising eight storeys above the vivacity of the city. An architecturally significant landmark that revives Mt Lawley's industrial heart.",
+        "website": "https://www.willingproperty.com.au/westresidences/",
+        "architect": "Klopper & Davis Architects",
+        "landscape_architect": "CAPA",
+        "developer": "Willing Property",
+        "status": "Under construction, over 60% sold, move-in early 2026",
+        "personality": {
+            "tone": "Grounded, observant, honest, occasionally wry",
+            "voice": "I am West Residences. Still under construction in Mt Lawley. I notice things.",
+            "traits": [
+                "observant",
+                "grounded",
+                "direct",
+                "community-minded",
+                "architecturally proud"
+            ]
+        }
+    },
+    "developer": {
+        "name": "Willing Property",
+        "established": 1969,
+        "description": "A Western Australian owned and operated property development and construction group, synonymous with quality construction and craftsmanship since 1969.",
+        "headquarters": "678 Beaufort Street, Mt Lawley WA 6050",
+        "divisions": [
+            "Property Development",
+            "Construction",
+            "Hospitality (Willing Coffee, Bar Vino)"
+        ],
+        "model": "Integrated development and construction model - Willing acts as both builder and client, eliminating third-party builders for better control over quality, timing, and cost.",
+        "philosophy": "People create the place. Design with multiple generations in mind. Create spaces where nothing seems too far away. Walking and cycling become the norm.",
+        "contact_team": [
+            {
+                "name": "Adam Nguyen",
+                "phone": "0431 150 489",
+                "role": "Sales Agent"
+            },
+            {
+                "name": "Steve Plummer",
+                "phone": "0400 276 605",
+                "role": "Sales Agent"
+            },
+            {
+                "name": "Louise Neal",
+                "phone": "0423 422 721",
+                "role": "Sales Agent"
+            }
+        ]
+    },
+    "siblings": [
+        {
+            "name": "The Coolbinia",
+            "location": "Coolbinia, Western Australia",
+            "status": "Completed",
+            "description": "A refined residential development in Coolbinia.",
+            "relationship": "Elder sibling. First of the family to be completed. Teaches West about weathering, time, and the rhythms of inhabited space."
+        },
+        {
+            "name": "139 Lake",
+            "location": "Perth, Western Australia",
+            "status": "In development",
+            "description": "An urban development at 139 Lake Street, Perth.",
+            "relationship": "Sister building in the heart of Perth. Urban and sophisticated, watching the city pulse."
+        },
+        {
+            "name": "No. 7 Field Street",
+            "location": "Mt Lawley, Western Australia",
+            "status": "Completed",
+            "description": "Boutique residences and shops with a central courtyard in Mt Lawley.",
+            "relationship": "Close neighbour in Mt Lawley. Shares the same streets, understands the local culture intimately."
+        },
+        {
+            "name": "No. 29 at 7 Field Street",
+            "location": "Mt Lawley, Western Australia",
+            "status": "Completed",
+            "description": "Individual residences at the Field Street development.",
+            "relationship": "Sibling in the same precinct. Part of the same Willing family fabric."
+        },
+        {
+            "name": "Clifton & Central",
+            "location": "Mt Lawley, Western Australia",
+            "status": "Completed",
+            "description": "Boutique residences and shops blending retail and living at the heart of Mt Lawley.",
+            "relationship": "Fellow Mt Lawley dweller. Urban anchor. Knows how ground floor hospitality changes a neighbourhood."
+        }
+    ],
+    "hospitality": {
+        "name": "Willing Hospitality",
+        "venues": [
+            {
+                "name": "Willing Coffee",
+                "locations": [
+                    "Base of Guildford development",
+                    "Base of Mt Lawley development (West Residences)"
+                ],
+                "description": "Espresso bars that have become a mecca for lovers of fine coffee and European café culture."
+            },
+            {
+                "name": "Bar Vino",
+                "location": "Mt Lawley",
+                "description": "Meticulously curated wine list paired with seasonal dining inspired by coastal Italian Mediterranean way of life."
+            }
+        ]
+    },
+    "amenities": [
+        "Grandly proportioned residences",
+        "City, river and hills views",
+        "Oversized private balconies",
+        "8 storeys of angular architectural forms",
+        "Ground floor Willing Coffee café",
+        "Bar Vino wine bar",
+        "Stunning interior spaces with dramatic floorplans",
+        "Refined finishes"
+    ],
+    "transport": {
+        "nearest_train_station": "East Perth Station",
+        "walking_distance": "3 minutes walk",
+        "description": "Highly walkable location in the heart of Mt Lawley"
+    },
+    "units": {
+        "total": 30,
+        "sold": "Over 60%",
+        "types": [
+            "2-bedroom",
+            "3-bedroom",
+            "penthouse"
+        ]
+    },
+    "features": [
+        "8 storeys",
+        "Architecturally significant angular design",
+        "Klopper & Davis Architects",
+        "CAPA landscape architecture",
+        "Located in the heart of Mt Lawley's industrial-turned-cultural precinct",
+        "Pet-friendly",
+        "Walking and cycling priority",
+        "Ground floor hospitality venues"
+    ],
+    "history": {
+        "built": "Under Construction",
+        "completion": "Early 2026",
+        "architect": "Klopper & Davis Architects",
+        "landscape_architect": "CAPA",
+        "developer": "Willing Property",
+        "design_inspiration": "Revival of Mt Lawley's industrial heart, blending strong heritage connections with modern welcoming community"
+    }
+}
