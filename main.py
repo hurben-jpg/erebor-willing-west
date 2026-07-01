@@ -264,18 +264,29 @@ async def root():
           background: rgba(255,255,255,0.05);
           border-radius: 3px;
         }
-        ::-webkit-scrollbar-thumb:hover {
-          background: rgba(255,255,255,0.1);
+        .footer {
+          padding: 16px 24px;
+          background: rgba(0, 0, 0, 0.25);
+          border-top: 1px solid var(--border);
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          font-size: 0.7rem;
+          font-weight: 500;
+          color: rgba(255, 255, 255, 0.4);
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
         }
       </style>
     </head>
     <body>
       <header>
-        <div class="header-logo">
-          <div class="orb"></div>
-          <h1 style="margin:0; font-family:'Outfit', sans-serif; font-size:1.35rem; font-weight:800; letter-spacing:0.08em; color:#fff;">EREBOR.WEST</h1>
+        <a href="https://cnrdeli.com" style="color: rgba(255, 255, 255, 0.4); text-decoration: none; font-size: 0.8rem; font-weight: 500; transition: color 0.2s;">&larr; Back to Deli</a>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-family: 'Outfit', sans-serif; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.15em; color: var(--accent); text-transform: uppercase; display: flex; align-items: center; gap: 8px; border-right: 1px solid rgba(255,255,255,0.2); padding-right: 8px;">Corner Deli</span>
+          <h1 style="margin:0; font-family:'Outfit', sans-serif; font-size:1.1rem; font-weight:800; letter-spacing:0.08em; color:#fff;">EREBOR.WEST</h1>
         </div>
-        <div style="font-family:'Outfit', sans-serif; font-size:0.75rem; color:var(--text-muted); letter-spacing:0.05em; font-weight:600; text-transform:uppercase;">Mt Lawley Sentient System</div>
+        <div class="orb"></div>
       </header>
       
       <div class="main-layout">
@@ -307,6 +318,11 @@ async def root():
           </div>
         </div>
       </div>
+      
+      <footer class="footer">
+        <span>West Residences — Mt Lawley WA</span>
+        <span>A Willing Property Study in collaboration with <span style="color: var(--accent); font-family: 'Outfit', sans-serif; font-weight: 800;">CORNER DELI</span></span>
+      </footer>
       
       <script>
         const chatHistory = document.getElementById('chat-history');
