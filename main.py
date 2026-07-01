@@ -426,6 +426,26 @@ async def status():
         "sensors": brain.sensors.get_all_readings()
     }
 
+@app.get("/debug-llm")
+async def debug_llm():
+    import os
+    google_key = os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
+    result = {
+        "gemini_key_present": bool(google_key),
+        "gemini_key_prefix": google_key[:8] + "..." if google_key else None,
+        "llm_initialized": brain.llm is not None,
+    }
+    if brain.llm:
+        try:
+            from langchain_core.messages import HumanMessage
+            test_msg = brain.llm.invoke([HumanMessage(content="Say 'test ok' in exactly 3 words.")])
+            result["llm_test"] = "SUCCESS"
+            result["llm_reply"] = test_msg.content
+        except Exception as e:
+            result["llm_test"] = "FAILED"
+            result["llm_error"] = str(e)
+    return result
+
 if __name__ == "__main__":
     import uvicorn
     import os
