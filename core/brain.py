@@ -11,17 +11,33 @@ class Brain:
         self.memory = Memory()
         self.sensors = MockSensors()
         
-        # Initialize LLM if API key is available
-        api_key = os.getenv("OPENAI_API_KEY")
+        # Initialize LLM - Support both Google Gemini (free tier) and OpenAI
+        openai_key = os.getenv("OPENAI_API_KEY")
+        google_key = os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
         self.llm = None
-        if api_key:
+        
+        if google_key:
+            try:
+                from langchain_google_genai import ChatGoogleGenerativeAI
+                self.llm = ChatGoogleGenerativeAI(
+                    api_key=google_key,
+                    model="gemini-1.5-flash",
+                    temperature=0.7
+                )
+                print("Using Google Gemini API.")
+            except Exception as e:
+                print(f"Warning: Failed to initialize Gemini LLM: {e}")
+                
+        if not self.llm and openai_key:
             try:
                 from langchain_openai import ChatOpenAI
-                self.llm = ChatOpenAI(api_key=api_key, model="gpt-3.5-turbo")
-            except ImportError:
-                print("Warning: langchain_openai not installed. Using mock response.")
-        else:
-            print("Warning: OPENAI_API_KEY not found. Using mock response.")
+                self.llm = ChatOpenAI(api_key=openai_key, model="gpt-3.5-turbo")
+                print("Using OpenAI API.")
+            except Exception as e:
+                print(f"Warning: Failed to initialize OpenAI LLM: {e}")
+                
+        if not self.llm:
+            print("Warning: No valid LLM initialized. Using mock response.")
 
     def think(self, user_input: str) -> str:
         """
