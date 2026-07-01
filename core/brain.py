@@ -58,16 +58,19 @@ class Brain:
         response = ""
         if self.llm:
             try:
+                print(f"DEBUG: Starting LLM invoke call to model: {getattr(self.llm, 'model', 'unknown') or getattr(self.llm, 'model_name', 'unknown')}...")
                 from langchain_core.messages import SystemMessage, HumanMessage
                 messages = [
                     SystemMessage(content=system_prompt),
                     HumanMessage(content=user_input)
                 ]
                 result = self.llm.invoke(messages)
+                print("DEBUG: LLM invoke call completed successfully.")
                 response = result.content
             except Exception as e:
-                print(f"Error calling LLM: {e}")
-                # Fallback to mock if LLM fails
+                print(f"ERROR: Exception during LLM invoke: {e}")
+                import traceback
+                traceback.print_exc()
         
         if not response:
             # Fallback mock response specific to West Residences
