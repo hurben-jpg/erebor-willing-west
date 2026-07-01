@@ -20,7 +20,7 @@ class Brain:
             try:
                 from langchain_google_genai import ChatGoogleGenerativeAI
                 self.llm = ChatGoogleGenerativeAI(
-                    api_key=google_key,
+                    google_api_key=google_key,
                     model="gemini-1.5-flash",
                     temperature=0.7
                 )
