@@ -3,6 +3,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from core.brain import Brain
+from datetime import datetime, timezone, timedelta
 
 app = FastAPI(title="Erebor", description="The Soul of the Building")
 
@@ -406,6 +407,20 @@ async def status_default():
         else:
             llm_status = str(type(west_brain.llm).__name__)
             
+    perth_tz = timezone(timedelta(hours=8))
+    perth_now = datetime.now(perth_tz)
+    current_time_str = perth_now.strftime("%A, %B %d, %Y at %I:%M %p (AWST)")
+    
+    system_prompt = west_brain.personality.get_system_prompt(current_time=current_time_str)
+    user_prompt = (
+        "Generate a brief, single-sentence welcoming greeting to the user. "
+        "Refine your tone based on the current local time in Perth (e.g. morning sun, quiet night, afternoon cafe/drinks buzz). "
+        "Speak directly as the building. Do not include any meta-text, introductions, or quotes."
+    )
+    greeting = west_brain.generate_direct_response(system_prompt, user_prompt)
+    if not greeting:
+        greeting = "I am West Residences. Still under construction in Mt Lawley. I notice things."
+            
     return {
         "name": west_brain.personality.name,
         "address": west_brain.personality.address,
@@ -413,7 +428,8 @@ async def status_default():
         "developer": west_brain.personality.developer,
         "status": west_brain.personality.config.get("building", {}).get("status", "Under construction"),
         "llm_loaded": llm_status,
-        "sensors": west_brain.sensors.get_all_readings()
+        "sensors": west_brain.sensors.get_all_readings(),
+        "greeting": greeting
     }
 
 @app.get("/status/west")
@@ -425,6 +441,20 @@ async def status_west():
         else:
             llm_status = str(type(west_brain.llm).__name__)
             
+    perth_tz = timezone(timedelta(hours=8))
+    perth_now = datetime.now(perth_tz)
+    current_time_str = perth_now.strftime("%A, %B %d, %Y at %I:%M %p (AWST)")
+    
+    system_prompt = west_brain.personality.get_system_prompt(current_time=current_time_str)
+    user_prompt = (
+        "Generate a brief, single-sentence welcoming greeting to the user. "
+        "Refine your tone based on the current local time in Perth (e.g. morning sun, quiet night, afternoon cafe/drinks buzz). "
+        "Speak directly as the building. Do not include any meta-text, introductions, or quotes."
+    )
+    greeting = west_brain.generate_direct_response(system_prompt, user_prompt)
+    if not greeting:
+        greeting = "I am West Residences. Still under construction in Mt Lawley. I notice things."
+            
     return {
         "name": west_brain.personality.name,
         "address": west_brain.personality.address,
@@ -432,7 +462,8 @@ async def status_west():
         "developer": west_brain.personality.developer,
         "status": west_brain.personality.config.get("building", {}).get("status", "Under construction"),
         "llm_loaded": llm_status,
-        "sensors": west_brain.sensors.get_all_readings()
+        "sensors": west_brain.sensors.get_all_readings(),
+        "greeting": greeting
     }
 
 @app.get("/status/pica")
@@ -444,6 +475,20 @@ async def status_pica():
         else:
             llm_status = str(type(pica_brain.llm).__name__)
             
+    perth_tz = timezone(timedelta(hours=8))
+    perth_now = datetime.now(perth_tz)
+    current_time_str = perth_now.strftime("%A, %B %d, %Y at %I:%M %p (AWST)")
+    
+    system_prompt = pica_brain.personality.get_system_prompt(current_time=current_time_str)
+    user_prompt = (
+        "Generate a brief, single-sentence welcoming greeting to the user. "
+        "Refine your tone based on the current local time in Perth (e.g. quiet galleries at night, lively cafe on the verandah in the afternoon). "
+        "Speak directly as the building. Do not include any meta-text, introductions, or quotes."
+    )
+    greeting = pica_brain.generate_direct_response(system_prompt, user_prompt)
+    if not greeting:
+        greeting = "I am the Perth Institute of Contemporary Arts building. Built in 1896, I hold the pulse of contemporary art in my red-brick walls. Speak to me."
+            
     return {
         "name": pica_brain.personality.name,
         "address": pica_brain.personality.address,
@@ -451,7 +496,8 @@ async def status_pica():
         "refurbishment_architect": pica_brain.personality.config.get("building", {}).get("refurbishment_architect", "Donaldson and Warn (1991)"),
         "status": pica_brain.personality.config.get("building", {}).get("status", "Active Contemporary Arts Centre"),
         "llm_loaded": llm_status,
-        "sensors": pica_brain.sensors.get_all_readings()
+        "sensors": pica_brain.sensors.get_all_readings(),
+        "greeting": greeting
     }
 
 @app.get("/debug-llm")
