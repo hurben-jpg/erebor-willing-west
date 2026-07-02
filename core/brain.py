@@ -21,10 +21,10 @@ class Brain:
                 from langchain_google_genai import ChatGoogleGenerativeAI
                 self.llm = ChatGoogleGenerativeAI(
                     google_api_key=google_key,
-                    model="gemini-2.0-flash-lite",
+                    model="gemini-2.0-flash",
                     temperature=0.7
                 )
-                print("Using Google Gemini API (gemini-2.0-flash-lite).")
+                print("Using Google Gemini API (gemini-2.0-flash).")
             except Exception as e:
                 print(f"Warning: Failed to initialize Gemini LLM: {e}")
                 
