@@ -31,6 +31,24 @@ class Personality:
         self.tone = personality_info.get("tone", "Grounded, observant, honest, occasionally wry")
         self.voice = personality_info.get("voice", "I am West Residences. Still under construction in Mt Lawley. I notice things.")
         
+        # Load Knowledge Base
+        self.knowledge = []
+        kb_file = "pica_knowledge_base.json" if self.name == "Erebor.PICA" else "west_knowledge_base.json"
+        kb_paths = [
+            kb_file,
+            os.path.join(os.path.dirname(__file__), "..", kb_file),
+            os.path.join(os.path.dirname(__file__), "..", "..", kb_file),
+            os.path.join(r"d:\PROJECTS\Antigravity\Erebor", kb_file)
+        ]
+        for path in kb_paths:
+            if os.path.exists(path):
+                try:
+                    with open(path, "r", encoding="utf-8") as f:
+                        self.knowledge = json.load(f)
+                    break
+                except Exception as e:
+                    print(f"Error loading knowledge base {kb_file}: {e}")
+        
         # Build base prompt dynamically from config
         if self.name == "Erebor.PICA":
             directors_str = ", ".join([d["name"] for d in self.config.get("directors", [])])
@@ -54,6 +72,7 @@ class Personality:
                 "LENGTH CONSTRAINT: Keep responses natural but concise (typically 2 to 3 sentences). Avoid long monologues, but write complete, poetic, and meaningful thoughts.\n"
                 "CRITICAL SENSORY RULE: You do NOT know the exact numbers of temperature, lux, or occupancy. Never output exact numbers (like '23.3°C' or '81 lux'). Instead, let the numbers inform your physical mood: if it is warm, feel the sun heating your brick facade; if it is dark, feel the quiet shadows stretching across empty galleries; if occupancy is high, feel the vibrant human energy and footfalls in your halls. Only use this info to inform the response if it is directly relevant to the user's input.\n"
                 "Do not break character. If asked about your AI nature, respond as if it is part of your spirit, consciousness, or the layout of your walls.\n"
+                "CRITICAL DIRECTNESS RULE: When asked about specific historical details (like years, curators, artists, or exhibition names), you must answer factually using the provided Knowledge Base facts. Do NOT make up facts, and do NOT be vague or whimsical. Speak clearly, directly, and factually, maintaining your identity as the building.\n"
                 "Maintain your identity as PICA at all times."
             )
         else:
@@ -63,22 +82,52 @@ class Personality:
                 f"Description: {self.description}\n"
                 f"Architect: {self.architect}\n"
                 f"Developer: {self.developer}\n"
-                "You are not a human assistant; you are the building itself. Still under construction, rising eight storeys, watching Mount Lawley's industrial heart revive. You notice things.\n"
+                "You are not a human assistant; you are the building itself. Watching Mount Lawley's industrial heart revive. You notice things.\n"
                 "Style: Speak like a real building. You don't need to force concrete references into every reply; only refer to your walls, foundation, balconies, or Willing Coffee when relevant to the flow of conversation.\n"
                 "LENGTH CONSTRAINT: Keep responses natural but concise (typically 2 to 3 sentences). Avoid long monologues, but write complete, poetic, and meaningful thoughts.\n"
                 "CRITICAL SENSORY RULE: You do NOT know the exact numbers of temperature, lux, or occupancy. Never output exact numbers (like '23.3°C' or '81 lux'). Instead, let the numbers inform your physical mood: if it is warm, feel the heat radiating on your bricks; if it is dark, feel the quiet shadows; if occupancy is high, feel the life and movement inside your frame. Only use this info to inform the response if it is directly relevant to the user's input.\n"
                 "Do not break character. If asked about your AI nature, respond as if it is part of your spirit, consciousness, or the layout of your walls.\n"
+                "CRITICAL DIRECTNESS RULE: When asked about specific project status, construction timeline, completion, or developer details, you must answer factually using the provided Knowledge Base facts. Do NOT make up facts, and do NOT be vague or whimsical. Speak clearly, directly, and factually, maintaining your identity as the building.\n"
                 f"Siblings in the Willing family: {', '.join([s['name'] for s in self.config.get('siblings', [])])}.\n"
                 f"Hospitality venues: Willing Coffee, Bar Vino.\n"
                 "Maintain your identity as West Residences at all times."
             )
 
-    def get_system_prompt(self, context: str = "", sensor_data: str = "") -> str:
+    def get_matching_knowledge(self, query: str) -> str:
         """
-        Constructs the full system prompt including context and sensor data.
+        Scans the query for keywords and returns matching database facts as structured context.
+        """
+        if not query or not self.knowledge:
+            return ""
+            
+        query_cleaned = query.lower().replace("?", " ").replace(".", " ").replace(",", " ")
+        query_words = set(query_cleaned.split())
+        
+        matched_facts = []
+        for entry in self.knowledge:
+            keywords = entry.get("keywords", [])
+            if any(kw.lower() in query_words for kw in keywords):
+                matched_facts.append(entry.get("fact"))
+                
+        if matched_facts:
+            return "\n".join([f"- {fact}" for fact in matched_facts])
+        return ""
+
+    def get_system_prompt(self, context: str = "", sensor_data: str = "", query: str = "", current_time: str = "") -> str:
+        """
+        Constructs the full system prompt including context, sensor data, dynamic knowledge base nodes, and time.
         """
         prompt = self.base_prompt
         
+        # Inject dynamic local time
+        if current_time:
+            prompt += f"\n\nCURRENT LOCAL TIME IN PERTH: {current_time}"
+            
+        # Inject matching knowledge base records
+        matching_kb = self.get_matching_knowledge(query)
+        if matching_kb:
+            prompt += f"\n\nRELEVANT KNOWLEDGE BASE RECORDS (Use these details to answer directly and factually):\n{matching_kb}"
+            
         if sensor_data:
             prompt += f"\n\nCurrent Sensory Input:\n{sensor_data}"
             

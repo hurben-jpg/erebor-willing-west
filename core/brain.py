@@ -43,7 +43,12 @@ class Brain:
         """
         Processes user input and generates a response.
         """
-        # 1. Gather Context
+        # 1. Gather Context and Time
+        from datetime import datetime, timedelta, timezone
+        perth_tz = timezone(timedelta(hours=8))
+        perth_now = datetime.now(perth_tz)
+        current_time_str = perth_now.strftime("%A, %B %d, %Y at %I:%M %p (AWST)")
+
         sensor_data = self.sensors.get_all_readings()
         relevant_memories = self.memory.get_relevant_memories(user_input)
         memory_text = "\n".join(relevant_memories) if relevant_memories else ""
@@ -51,7 +56,9 @@ class Brain:
         # 2. Construct Prompt
         system_prompt = self.personality.get_system_prompt(
             context=memory_text,
-            sensor_data=sensor_data
+            sensor_data=sensor_data,
+            query=user_input,
+            current_time=current_time_str
         )
         
         # 3. Generate Response

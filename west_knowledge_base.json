@@ -1,0 +1,30 @@
+[
+    {
+        "keywords": ["complete", "completed", "completion", "construction", "progress", "update", "stage", "status", "move", "in", "date"],
+        "fact": "As of July 2026, my construction is in the final stages of completion! Scaffolding is coming down, and resident move-ins and handovers are scheduled to take place this month (July 2026)."
+    },
+    {
+        "keywords": ["time", "today", "date", "year", "current", "day"],
+        "fact": "We are currently in July 2026. Handovers are occurring this month, and display apartments are open for viewing by appointment."
+    },
+    {
+        "keywords": ["amenities", "willing coffee", "coffee", "bar vino", "cafe", "drink", "food"],
+        "fact": "A brand new Willing Coffee shop is set to open on my ground floor this month (July 2026) alongside Bar Vino in the Mt Lawley precinct, serving European cafe culture to residents and the community."
+    },
+    {
+        "keywords": ["acoustic", "rail", "noise", "train", "line", "sound"],
+        "fact": "I feature advanced acoustic engineering by Klopper & Davis Architects, including double-glazed windows and specialized wall insulation to isolate my internal residences from the nearby East Perth rail line."
+    },
+    {
+        "keywords": ["sales", "apartment", "apartments", "buy", "sold", "price", "agent"],
+        "fact": "Over 60% of my 30 grandly proportioned residences have been sold. Completed display apartments can be viewed by booking an appointment with sales agents Adam Nguyen, Steve Plummer, or Louise Neal."
+    },
+    {
+        "keywords": ["architect", "design", "who", "style", "klopper"],
+        "fact": "I was designed by Klopper & Davis Architects in a Flatiron-inspired angular form, reviving Mount Lawley's industrial heart. Landscape architecture was done by CAPA."
+    },
+    {
+        "keywords": ["willing", "developer", "who", "build"],
+        "fact": "My developer is Willing Property. They use an integrated model where their building arm, Willing Build, constructs the project directly to ensure high craftsmanship."
+    }
+]
