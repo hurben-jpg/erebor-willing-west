@@ -1,43 +1,67 @@
-import chromadb
-from chromadb.config import Settings
+import json
+import os
 import uuid
 from typing import List, Dict, Any
 
 class Memory:
-    def __init__(self, persist_directory: str = "./chroma_db"):
-        self.client = chromadb.PersistentClient(path=persist_directory)
-        self.collection = self.client.get_or_create_collection(name="erebor_memories")
+    def __init__(self, persist_file: str = "./memories.json"):
+        # Support fallback path for different running environments
+        possible_paths = [
+            persist_file,
+            os.path.join(os.path.dirname(__file__), "..", persist_file),
+            r"d:\PROJECTS\Antigravity\Erebor\memories.json"
+        ]
+        self.persist_file = persist_file
+        for path in possible_paths:
+            if os.path.exists(path) or os.path.exists(os.path.dirname(path) or '.'):
+                self.persist_file = path
+                break
+                
+        self.memories = []
+        self.load_memories()
+
+    def load_memories(self):
+        if os.path.exists(self.persist_file):
+            try:
+                with open(self.persist_file, "r", encoding="utf-8") as f:
+                    self.memories = json.load(f)
+            except Exception as e:
+                print(f"Error loading memories: {e}")
+                self.memories = []
+
+    def save_memories(self):
+        try:
+            with open(self.persist_file, "w", encoding="utf-8") as f:
+                json.dump(self.memories, f, indent=2, ensure_ascii=False)
+        except Exception as e:
+            print(f"Error saving memories: {e}")
 
     def add_memory(self, text: str, metadata: Dict[str, Any] = None):
-        """
-        Adds a new memory to the database.
-        """
         if metadata is None:
             metadata = {}
-            
-        self.collection.add(
-            documents=[text],
-            metadatas=[metadata],
-            ids=[str(uuid.uuid4())]
-        )
+        self.memories.append({
+            "id": str(uuid.uuid4()),
+            "text": text,
+            "metadata": metadata
+        })
+        self.save_memories()
 
     def get_relevant_memories(self, query: str, n_results: int = 3) -> List[str]:
-        """
-        Retrieves the most relevant memories for a given query.
-        """
-        results = self.collection.query(
-            query_texts=[query],
-            n_results=n_results
-        )
-        
-        # ChromaDB returns a list of lists, we want to flatten it
-        if results and results['documents']:
-            return results['documents'][0]
-        return []
+        query_words = set(w.strip("?,.!:;\"'") for w in query.lower().split() if len(w) > 2)
+        if not query_words:
+            return []
+            
+        scored_memories = []
+        for mem in self.memories:
+            text = mem["text"]
+            text_words = set(w.strip("?,.!:;\"'") for w in text.lower().split())
+            score = sum(1 for w in query_words if w in text_words)
+            if score > 0:
+                scored_memories.append((score, text))
+                
+        scored_memories.sort(key=lambda x: x[0], reverse=True)
+        return [text for score, text in scored_memories[:n_results]]
 
     def clear_memory(self):
-        """
-        Clears all memories (useful for testing).
-        """
-        self.client.delete_collection("erebor_memories")
-        self.collection = self.client.get_or_create_collection(name="erebor_memories")
+        self.memories = []
+        self.save_memories()
