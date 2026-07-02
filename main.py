@@ -504,6 +504,69 @@ async def clear_memory_pica():
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+@app.get("/greeting")
+async def greeting_default():
+    try:
+        from datetime import datetime, timezone, timedelta
+        perth_tz = timezone(timedelta(hours=8))
+        perth_now = datetime.now(perth_tz)
+        current_time_str = perth_now.strftime("%A, %B %d, %Y at %I:%M %p (AWST)")
+        
+        system_prompt = west_brain.personality.get_system_prompt(current_time=current_time_str)
+        user_prompt = (
+            "Generate a brief, single-sentence welcoming greeting to the user. "
+            "Refine your tone based on the current local time in Perth (e.g. morning sun, quiet night, afternoon cafe/drinks buzz). "
+            "Speak directly as the building. Do not include any meta-text, introductions, or quotes."
+        )
+        response = west_brain.generate_direct_response(system_prompt, user_prompt)
+        if not response:
+            raise Exception("Empty response from LLM")
+        return {"greeting": response}
+    except Exception as e:
+        return {"greeting": "I am West Residences. Still under construction in Mt Lawley. I notice things."}
+
+@app.get("/greeting/west")
+async def greeting_west():
+    try:
+        from datetime import datetime, timezone, timedelta
+        perth_tz = timezone(timedelta(hours=8))
+        perth_now = datetime.now(perth_tz)
+        current_time_str = perth_now.strftime("%A, %B %d, %Y at %I:%M %p (AWST)")
+        
+        system_prompt = west_brain.personality.get_system_prompt(current_time=current_time_str)
+        user_prompt = (
+            "Generate a brief, single-sentence welcoming greeting to the user. "
+            "Refine your tone based on the current local time in Perth (e.g. morning sun, quiet night, afternoon cafe/drinks buzz). "
+            "Speak directly as the building. Do not include any meta-text, introductions, or quotes."
+        )
+        response = west_brain.generate_direct_response(system_prompt, user_prompt)
+        if not response:
+            raise Exception("Empty response from LLM")
+        return {"greeting": response}
+    except Exception as e:
+        return {"greeting": "I am West Residences. Still under construction in Mt Lawley. I notice things."}
+
+@app.get("/greeting/pica")
+async def greeting_pica():
+    try:
+        from datetime import datetime, timezone, timedelta
+        perth_tz = timezone(timedelta(hours=8))
+        perth_now = datetime.now(perth_tz)
+        current_time_str = perth_now.strftime("%A, %B %d, %Y at %I:%M %p (AWST)")
+        
+        system_prompt = pica_brain.personality.get_system_prompt(current_time=current_time_str)
+        user_prompt = (
+            "Generate a brief, single-sentence welcoming greeting to the user. "
+            "Refine your tone based on the current local time in Perth (e.g. quiet galleries at night, lively cafe on the verandah in the afternoon). "
+            "Speak directly as the building. Do not include any meta-text, introductions, or quotes."
+        )
+        response = pica_brain.generate_direct_response(system_prompt, user_prompt)
+        if not response:
+            raise Exception("Empty response from LLM")
+        return {"greeting": response}
+    except Exception as e:
+        return {"greeting": "I am the Perth Institute of Contemporary Arts building. Built in 1896, I hold the pulse of contemporary art in my red-brick walls. Speak to me."}
+
 if __name__ == "__main__":
     import uvicorn
     import os

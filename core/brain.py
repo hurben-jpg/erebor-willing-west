@@ -100,3 +100,20 @@ class Brain:
         )
 
         return response
+
+    def generate_direct_response(self, system_prompt: str, user_input: str) -> str:
+        """
+        Generates a response from the LLM without saving to conversation memory.
+        """
+        if self.llm:
+            try:
+                from langchain_core.messages import SystemMessage, HumanMessage
+                messages = [
+                    SystemMessage(content=system_prompt),
+                    HumanMessage(content=user_input)
+                ]
+                result = self.llm.invoke(messages)
+                return result.content
+            except Exception as e:
+                print(f"Error in direct response: {e}")
+        return ""
