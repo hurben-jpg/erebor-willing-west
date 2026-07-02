@@ -23,7 +23,7 @@ class Brain:
                     google_api_key=google_key,
                     model="gemini-2.5-flash",
                     temperature=0.7,
-                    max_output_tokens=120
+                    max_output_tokens=250
                 )
                 print("Using Google Gemini API (gemini-2.5-flash).")
             except Exception as e:
@@ -32,7 +32,7 @@ class Brain:
         if not self.llm and openai_key:
             try:
                 from langchain_openai import ChatOpenAI
-                self.llm = ChatOpenAI(api_key=openai_key, model="gpt-3.5-turbo", max_tokens=120)
+                self.llm = ChatOpenAI(api_key=openai_key, model="gpt-3.5-turbo", max_tokens=250)
                 print("Using OpenAI API.")
             except Exception as e:
                 print(f"Warning: Failed to initialize OpenAI LLM: {e}")
