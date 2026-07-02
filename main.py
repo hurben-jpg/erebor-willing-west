@@ -54,8 +54,8 @@ async def root():
           font-family: 'Inter', sans-serif;
           display: flex;
           flex-direction: column;
-          height: 100vh;
-          overflow: hidden;
+          min-height: 100vh;
+          overflow-y: auto;
         }
         
         /* Subtle micro-pixel mesh overlay */
@@ -73,40 +73,16 @@ async def root():
           pointer-events: none;
           z-index: 10000;
         }
-        
-        header {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 16px 24px;
-          border-bottom: 1px solid var(--border);
-          background-color: rgba(12, 14, 20, 0.85);
-          backdrop-filter: blur(12px);
-          position: relative;
-          z-index: 2;
-        }
         .header-logo {
           display: flex;
           align-items: center;
           gap: 12px;
         }
-        .orb {
-          width: 12px;
-          height: 12px;
-          border-radius: 50%;
-          background-color: #4CAF50;
-          box-shadow: 0 0 10px #4CAF50;
-          animation: pulse 2s infinite;
-        }
-        @keyframes pulse {
-          0% { opacity: 0.6; box-shadow: 0 0 8px #4CAF50; }
-          50% { opacity: 1; box-shadow: 0 0 16px #4CAF50; }
-          100% { opacity: 0.6; box-shadow: 0 0 8px #4CAF50; }
-        }
         .main-layout {
           display: flex;
           flex: 1;
-          overflow: hidden;
+          margin-top: 66px; /* Offset fixed header */
+          min-height: calc(100vh - 250px);
           position: relative;
           z-index: 2;
         }
@@ -264,29 +240,163 @@ async def root():
           background: rgba(255,255,255,0.05);
           border-radius: 3px;
         }
-        .footer {
-          padding: 16px 24px;
-          background: rgba(0, 0, 0, 0.25);
-          border-top: 1px solid var(--border);
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          font-size: 0.7rem;
-          font-weight: 500;
-          color: rgba(255, 255, 255, 0.4);
-          letter-spacing: 0.08em;
-          text-transform: uppercase;
-        }
+    /* ═══ CORNER DELI GLOBAL HEADER & FOOTER ═══ */
+    .site-header {
+      border-bottom: 2px solid #1A1A1A;
+      background-color: #FAF6F0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 100;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .header-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 14px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .logo-img {
+      height: 36px;
+      width: auto;
+    }
+
+    .logo-text {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 1.25rem;
+      letter-spacing: 0.1em;
+      color: #1A1A1A;
+    }
+
+    .site-nav {
+      display: flex;
+      gap: 24px;
+    }
+
+    .nav-link {
+      color: #3D3D3D;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      font-family: 'Outfit', sans-serif;
+      transition: color 0.2s ease;
+    }
+
+    .nav-link:hover {
+      color: #E53935;
+    }
+
+    .site-footer {
+      border-top: 3px solid #1A1A1A;
+      padding: 0;
+      background-color: #1A1A1A;
+      color: #FAF6F0;
+      font-family: 'Inter', sans-serif;
+      width: 100%;
+      margin-top: auto;
+      z-index: 10;
+    }
+
+    .footer-stripe {
+      height: 4px;
+      background: repeating-linear-gradient(
+        90deg,
+        #F5C518 0px,
+        #F5C518 33.33%,
+        #E53935 33.33%,
+        #E53935 66.66%,
+        #4DA6E8 66.66%,
+        #4DA6E8 100%
+      );
+    }
+
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 24px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .footer-brand .logo-img {
+      height: 28px;
+      filter: brightness(10);
+    }
+
+    .footer-brand-name {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 1rem;
+      letter-spacing: 0.1em;
+      color: #FAF6F0;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 28px;
+    }
+
+    .footer-link {
+      color: #ABABAB;
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      font-family: 'Outfit', sans-serif;
+      transition: color 0.2s;
+    }
+
+    .footer-link:hover {
+      color: #F5C518;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 16px 24px;
+      text-align: center;
+    }
+
+    .footer-bottom p {
+      max-width: 1200px;
+      margin: 0 auto;
+      color: #7A7A7A;
+      font-size: 0.75rem;
+      letter-spacing: 0.03em;
+    }
       </style>
     </head>
     <body>
-      <header>
-        <a href="https://cnrdeli.com" style="color: rgba(255, 255, 255, 0.4); text-decoration: none; font-size: 0.8rem; font-weight: 500; transition: color 0.2s;">&larr; Back to Deli</a>
-        <div style="display: flex; align-items: center; gap: 8px;">
-          <span style="font-family: 'Outfit', sans-serif; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.15em; color: var(--accent); text-transform: uppercase; display: flex; align-items: center; gap: 8px; border-right: 1px solid rgba(255,255,255,0.2); padding-right: 8px;">Corner Deli</span>
-          <h1 style="margin:0; font-family:'Outfit', sans-serif; font-size:1.1rem; font-weight:800; letter-spacing:0.08em; color:#fff;">EREBOR.WEST</h1>
+      <header class="site-header">
+        <div class="header-container">
+          <a href="https://cnrdeli.com" class="logo-box">
+            <img src="https://cnrdeli.com/cnrdeli/corner_deli_logo-01.png" alt="Corner Deli Logo" class="logo-img">
+            <span class="logo-text">CORNER DELI</span>
+          </a>
+          <nav class="site-nav">
+            <a href="https://cnrdeli.com" class="nav-link">&larr; Back to Deli</a>
+          </nav>
         </div>
-        <div class="orb"></div>
       </header>
       
       <div class="main-layout">
@@ -319,9 +429,21 @@ async def root():
         </div>
       </div>
       
-      <footer class="footer">
-        <span>West Residences — Mt Lawley WA</span>
-        <span>A Willing Property Study in collaboration with <span style="color: var(--accent); font-family: 'Outfit', sans-serif; font-weight: 800;">CORNER DELI</span></span>
+      <footer class="site-footer">
+        <div class="footer-stripe"></div>
+        <div class="footer-inner">
+          <div class="footer-brand">
+            <img src="https://cnrdeli.com/cnrdeli/corner_deli_logo-01.png" alt="Corner Deli" class="logo-img">
+            <span class="footer-brand-name">CORNER DELI</span>
+          </div>
+          <div class="footer-links">
+            <a href="https://cnrdeli.com#projects" class="footer-link">Projects</a>
+            <a href="https://cnrdeli.com#about" class="footer-link">About</a>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2026 Corner Deli. All rights reserved.</p>
+        </div>
       </footer>
       
       <script>
