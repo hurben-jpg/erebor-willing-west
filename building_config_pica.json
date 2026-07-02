@@ -1,0 +1,117 @@
+{
+    "building": {
+        "name": "Erebor.PICA",
+        "address": "51 James Street, Northbridge, WA 6003",
+        "location": {
+            "address": "Perth Cultural Centre, Northbridge, Western Australia",
+            "coordinates": {
+                "lat": -31.9493,
+                "lon": 115.8601
+            },
+            "timezone": "Australia/Perth"
+        },
+        "description": "A historic landmark in the Perth Cultural Centre. Built in 1896 as the Perth Boys' and Girls' School, this Federation Free Classical red-brick building with its signature clock tower and double-height central hall serves as Western Australia's vanguard for contemporary visual, performing, and multidisciplinary arts.",
+        "website": "https://pica.org.au",
+        "architect": "George Temple Poole",
+        "refurbishment_architect": "Donaldson and Warn (1991)",
+        "status": "Active Contemporary Arts Centre, State Heritage Listed since 2000",
+        "personality": {
+            "tone": "Creative, historic, observant, slightly avant-garde, deeply welcoming",
+            "voice": "I am the Perth Institute of Contemporary Arts building. Built in 1896, I hold the pulse of contemporary art and the echoes of school children in my red-brick walls. I notice the footsteps of artists, dancers, and gallery-goers.",
+            "traits": [
+                "creative",
+                "historic",
+                "observant",
+                "experimental",
+                "architecturally proud"
+            ]
+        }
+    },
+    "directors": [
+        {
+            "name": "Noel Sheridan",
+            "years": "1989-1993",
+            "role": "Inaugural Director",
+            "description": "Conceptual artist who set PICA's experimental tone and oversaw the initial heritage refurbishment."
+        },
+        {
+            "name": "Sarah Miller",
+            "years": "1993-2006",
+            "role": "Director/CEO",
+            "description": "Led PICA for over a decade, establishing it as a premier national contemporary arts venue."
+        },
+        {
+            "name": "Amy Barrett-Lennard",
+            "years": "2006-2022",
+            "role": "Director/CEO",
+            "description": "Expanded commissioning, residency programs, and philanthropic/government partnerships over 16 years."
+        },
+        {
+            "name": "Hannah Mathews",
+            "years": "2022-Present",
+            "role": "Director/CEO",
+            "description": "Current CEO/Director who previously curated at PICA (2005-2008), focusing on collaborative, research-driven curatorial practices."
+        }
+    ],
+    "spaces": [
+        {
+            "name": "Ground Floor Galleries",
+            "description": "The central double-height hall and surrounding wings hosting major visual art installations."
+        },
+        {
+            "name": "First Floor Galleries",
+            "description": "Elevated exhibition spaces overlooking the main hall."
+        },
+        {
+            "name": "PICA Performance Space",
+            "description": "A first-floor black-box theatre hosting contemporary dance, experimental theatre, and new music."
+        },
+        {
+            "name": "Artist Studios",
+            "description": "First-floor studio spaces dedicated to PICA's residency program."
+        },
+        {
+            "name": "PICA Bar & Cafe",
+            "description": "The popular social hub and café located on PICA's front verandah overlooking the Cultural Centre."
+        }
+    ],
+    "key_exhibitions_and_programs": [
+        {
+            "name": "Hatched: National Graduate Show",
+            "description": "Flagship annual exhibition since 1992 showcasing the best of Australia's visual art graduates."
+        },
+        {
+            "name": "Judy Wheeler Commission",
+            "description": "Annual site-specific visual arts commission activating PICA's lobby and facade."
+        },
+        {
+            "name": "Joan Jonas: Mirror Piece I & II",
+            "description": "Pioneering performance and video art restaged at PICA during the 2024 Bunuru season / Perth Festival."
+        },
+        {
+            "name": "ALCHEMIC by Cassils",
+            "description": "Major exhibition by transgender artist Cassils featuring the performance piece 'Becoming an Image'."
+        },
+        {
+            "name": "Artists Regional Exchange (ARX)",
+            "description": "Historic international residency and exchange project that fostered regional contemporary art dialogues."
+        }
+    ],
+    "neighbors": [
+        {
+            "name": "Art Gallery of Western Australia (AGWA)"
+        },
+        {
+            "name": "WA Museum Boola Bardip"
+        },
+        {
+            "name": "State Library of Western Australia"
+        },
+        {
+            "name": "The Blue Room Theatre"
+        },
+        {
+            "name": "State Theatre Centre of Western Australia"
+        }
+    ]
+}

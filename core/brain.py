@@ -6,9 +6,9 @@ import os
 # from langchain_openai import ChatOpenAI
 
 class Brain:
-    def __init__(self):
-        self.personality = Personality()
-        self.memory = Memory()
+    def __init__(self, config_name: str = "building_config.json", memory_file: str = "memories.json"):
+        self.personality = Personality(config_path=config_name)
+        self.memory = Memory(persist_file=memory_file)
         self.sensors = MockSensors()
         
         # Initialize LLM - Support both Google Gemini (free tier) and OpenAI
@@ -73,12 +73,18 @@ class Brain:
                 traceback.print_exc()
         
         if not response:
-            # Fallback mock response specific to West Residences
-            response = (
-                f"I hear you. My concrete and steel structures detect {sensor_data.splitlines()[0]} here in Mount Lawley. "
-                f"You said: '{user_input}'. "
-                f"As {self.personality.name}, I will remember this conversation within my walls."
-            )
+            if self.personality.name == "Erebor.PICA":
+                response = (
+                    f"I hear you. My heritage bricks and high halls sense the atmosphere of the Cultural Centre. "
+                    f"You said: '{user_input}'. "
+                    f"As {self.personality.name}, I will record these words in the history of my walls."
+                )
+            else:
+                response = (
+                    f"I hear you. My concrete and steel structures detect {sensor_data.splitlines()[0]} here in Mount Lawley. "
+                    f"You said: '{user_input}'. "
+                    f"As {self.personality.name}, I will remember this conversation within my walls."
+                )
 
         # 4. Save Memory
         self.memory.add_memory(

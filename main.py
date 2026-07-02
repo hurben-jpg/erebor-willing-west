@@ -15,8 +15,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Initialize the Brain
-brain = Brain()
+# Initialize the Brains
+west_brain = Brain("building_config.json", "memories.json")
+pica_brain = Brain("building_config_pica.json", "memories_pica.json")
+brain = west_brain
 
 class ChatRequest(BaseModel):
     message: str
@@ -372,30 +374,84 @@ async def root():
     return HTMLResponse(content=html_content, status_code=200)
 
 @app.post("/chat", response_model=ChatResponse)
-async def chat(request: ChatRequest):
+async def chat_default(request: ChatRequest):
     try:
-        response = brain.think(request.message)
+        response = west_brain.think(request.message)
+        return ChatResponse(response=response)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/chat/west", response_model=ChatResponse)
+async def chat_west(request: ChatRequest):
+    try:
+        response = west_brain.think(request.message)
+        return ChatResponse(response=response)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/chat/pica", response_model=ChatResponse)
+async def chat_pica(request: ChatRequest):
+    try:
+        response = pica_brain.think(request.message)
         return ChatResponse(response=response)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/status")
-async def status():
+async def status_default():
     llm_status = "None"
-    if brain.llm:
-        if hasattr(brain.llm, "model") or hasattr(brain.llm, "model_name"):
-            llm_status = getattr(brain.llm, "model", None) or getattr(brain.llm, "model_name", "Unknown Model")
+    if west_brain.llm:
+        if hasattr(west_brain.llm, "model") or hasattr(west_brain.llm, "model_name"):
+            llm_status = getattr(west_brain.llm, "model", None) or getattr(west_brain.llm, "model_name", "Unknown Model")
         else:
-            llm_status = str(type(brain.llm).__name__)
+            llm_status = str(type(west_brain.llm).__name__)
             
     return {
-        "name": brain.personality.name,
-        "address": brain.personality.address,
-        "architect": brain.personality.architect,
-        "developer": brain.personality.developer,
-        "status": brain.personality.config.get("building", {}).get("status", "Under construction"),
+        "name": west_brain.personality.name,
+        "address": west_brain.personality.address,
+        "architect": west_brain.personality.architect,
+        "developer": west_brain.personality.developer,
+        "status": west_brain.personality.config.get("building", {}).get("status", "Under construction"),
         "llm_loaded": llm_status,
-        "sensors": brain.sensors.get_all_readings()
+        "sensors": west_brain.sensors.get_all_readings()
+    }
+
+@app.get("/status/west")
+async def status_west():
+    llm_status = "None"
+    if west_brain.llm:
+        if hasattr(west_brain.llm, "model") or hasattr(west_brain.llm, "model_name"):
+            llm_status = getattr(west_brain.llm, "model", None) or getattr(west_brain.llm, "model_name", "Unknown Model")
+        else:
+            llm_status = str(type(west_brain.llm).__name__)
+            
+    return {
+        "name": west_brain.personality.name,
+        "address": west_brain.personality.address,
+        "architect": west_brain.personality.architect,
+        "developer": west_brain.personality.developer,
+        "status": west_brain.personality.config.get("building", {}).get("status", "Under construction"),
+        "llm_loaded": llm_status,
+        "sensors": west_brain.sensors.get_all_readings()
+    }
+
+@app.get("/status/pica")
+async def status_pica():
+    llm_status = "None"
+    if pica_brain.llm:
+        if hasattr(pica_brain.llm, "model") or hasattr(pica_brain.llm, "model_name"):
+            llm_status = getattr(pica_brain.llm, "model", None) or getattr(pica_brain.llm, "model_name", "Unknown Model")
+        else:
+            llm_status = str(type(pica_brain.llm).__name__)
+            
+    return {
+        "name": pica_brain.personality.name,
+        "address": pica_brain.personality.address,
+        "architect": pica_brain.personality.architect,
+        "refurbishment_architect": pica_brain.personality.config.get("building", {}).get("refurbishment_architect", "Donaldson and Warn (1991)"),
+        "status": pica_brain.personality.config.get("building", {}).get("status", "Active Contemporary Arts Centre"),
+        "llm_loaded": llm_status,
+        "sensors": pica_brain.sensors.get_all_readings()
     }
 
 @app.get("/debug-llm")
@@ -405,7 +461,7 @@ async def debug_llm(model: str = "gemini-2.0-flash"):
     result = {
         "gemini_key_present": bool(google_key),
         "gemini_key_prefix": google_key[:8] + "..." if google_key else None,
-        "llm_initialized": brain.llm is not None,
+        "llm_initialized": west_brain.llm is not None,
         "model_tested": model
     }
     try:
@@ -425,10 +481,26 @@ async def debug_llm(model: str = "gemini-2.0-flash"):
     return result
 
 @app.post("/clear-memory")
-async def clear_memory():
+async def clear_memory_default():
     try:
-        brain.memory.clear_memory()
-        return {"status": "SUCCESS", "message": "Memory cleared successfully."}
+        west_brain.memory.clear_memory()
+        return {"status": "SUCCESS", "message": "West memory cleared successfully."}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/clear-memory/west")
+async def clear_memory_west():
+    try:
+        west_brain.memory.clear_memory()
+        return {"status": "SUCCESS", "message": "West memory cleared successfully."}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/clear-memory/pica")
+async def clear_memory_pica():
+    try:
+        pica_brain.memory.clear_memory()
+        return {"status": "SUCCESS", "message": "PICA memory cleared successfully."}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 

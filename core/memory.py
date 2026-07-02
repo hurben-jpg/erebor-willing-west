@@ -9,7 +9,7 @@ class Memory:
         possible_paths = [
             persist_file,
             os.path.join(os.path.dirname(__file__), "..", persist_file),
-            r"d:\PROJECTS\Antigravity\Erebor\memories.json"
+            os.path.join(r"d:\PROJECTS\Antigravity\Erebor", persist_file)
         ]
         self.persist_file = persist_file
         for path in possible_paths:
