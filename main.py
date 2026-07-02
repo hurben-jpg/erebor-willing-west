@@ -452,6 +452,14 @@ async def debug_llm(model: str = "gemini-2.0-flash"):
         result["llm_error"] = str(e)
     return result
 
+@app.post("/clear-memory")
+async def clear_memory():
+    try:
+        brain.memory.clear_memory()
+        return {"status": "SUCCESS", "message": "Memory cleared successfully."}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 if __name__ == "__main__":
     import uvicorn
     import os
