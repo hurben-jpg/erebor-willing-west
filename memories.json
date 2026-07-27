@@ -68,5 +68,19 @@
     "metadata": {
       "type": "conversation"
     }
+  },
+  {
+    "id": "79115a5f-f2ef-44f8-b4a3-ff9491c1a7a5",
+    "text": "User: Hello, who are you?\nErebor: I hear you. My concrete and steel structures detect Temperature: 20.7°C here in Mount Lawley. You said: 'Hello, who are you?'. As Erebor.West, I will remember this conversation within my walls.",
+    "metadata": {
+      "type": "conversation"
+    }
+  },
+  {
+    "id": "6ff60f5d-cfd6-4362-a36f-d977235c9dc1",
+    "text": "User: Is it cold outside?\nErebor: I hear you. My concrete and steel structures detect Temperature: 22.3°C here in Mount Lawley. You said: 'Is it cold outside?'. As Erebor.West, I will remember this conversation within my walls.",
+    "metadata": {
+      "type": "conversation"
+    }
   }
 ]
