@@ -9,7 +9,15 @@ class Brain:
     def __init__(self, config_name: str = "building_config.json", memory_file: str = "memories.json"):
         self.personality = Personality(config_path=config_name)
         self.memory = Memory(persist_file=memory_file)
-        self.sensors = MockSensors()
+        
+        # Load location coordinates and name from config
+        building_info = self.personality.config.get("building", {})
+        coords = building_info.get("location", {}).get("coordinates", {})
+        lat = coords.get("lat", -31.9493)
+        lon = coords.get("lon", 115.8601)
+        name = self.personality.name
+        
+        self.sensors = MockSensors(lat=lat, lon=lon, name=name)
         
         # Initialize LLM - Support both Google Gemini (free tier) and OpenAI
         openai_key = os.getenv("OPENAI_API_KEY")
@@ -51,6 +59,12 @@ class Brain:
 
         sensor_data = self.sensors.get_all_readings()
         relevant_memories = self.memory.get_relevant_memories(user_input)
+        
+        # Inject long-term memory summary
+        long_term_summary = self.memory.get_long_term_summary()
+        if long_term_summary:
+            relevant_memories.insert(0, f"[Long-Term Memory of this visitor: {long_term_summary}]")
+            
         memory_text = "\n".join(relevant_memories) if relevant_memories else ""
 
         # 2. Construct Prompt
@@ -98,8 +112,38 @@ class Brain:
             text=f"User: {user_input}\nErebor: {response}",
             metadata={"type": "conversation"}
         )
+        
+        # 5. Compile/update long-term memory summary periodically (every 6 messages)
+        if len(self.memory.memories) % 6 == 0:
+            self.generate_long_term_summary()
 
         return response
+
+    def generate_long_term_summary(self):
+        """Compiles a concise summary of the conversation history to save to long-term memory."""
+        if not self.llm or not self.memory.memories:
+            return
+            
+        chat_history = "\n".join([m["text"] for m in self.memory.memories[-12:]]) # Summary of recent turns
+        current_summary = self.memory.get_long_term_summary()
+        
+        system_prompt = (
+            "You are the long-term memory compiler for a sentient building. "
+            "Write a concise, factual summary (1-3 sentences) of what the building has learned about the visitor. "
+            "Do NOT use poetic language or monologues. Keep it factual and helpful.\n"
+            f"Current long-term summary: {current_summary}\n"
+            "Update this summary using the new chat history below. "
+            "Capture: visitor's name (if mentioned), their preferences/interests, and major topics discussed."
+        )
+        
+        try:
+            print(f"[{self.personality.name}] Compiling long-term summary...")
+            new_summary = self.generate_direct_response(system_prompt, chat_history)
+            if new_summary:
+                self.memory.update_long_term_summary(new_summary.strip())
+                print(f"[{self.personality.name}] Saved long-term memory summary: {new_summary.strip()}")
+        except Exception as e:
+            print(f"Error compiling long-term summary: {e}")
 
     def generate_direct_response(self, system_prompt: str, user_input: str) -> str:
         """

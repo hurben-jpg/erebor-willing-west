@@ -65,3 +65,28 @@ class Memory:
     def clear_memory(self):
         self.memories = []
         self.save_memories()
+
+    def get_long_term_summary_file(self) -> str:
+        """Returns the path to the long term summary JSON file."""
+        return self.persist_file.replace(".json", "_summary.json")
+
+    def get_long_term_summary(self) -> str:
+        """Loads and returns the long-term summary of the visitor."""
+        path = self.get_long_term_summary_file()
+        if os.path.exists(path):
+            try:
+                with open(path, "r", encoding="utf-8") as f:
+                    data = json.load(f)
+                    return data.get("summary", "")
+            except Exception as e:
+                print(f"Error loading long term summary: {e}")
+        return ""
+
+    def update_long_term_summary(self, new_summary: str):
+        """Updates and persists the long-term summary of the visitor."""
+        path = self.get_long_term_summary_file()
+        try:
+            with open(path, "w", encoding="utf-8") as f:
+                json.dump({"summary": new_summary}, f, indent=2, ensure_ascii=False)
+        except Exception as e:
+            print(f"Error saving long term summary: {e}")

@@ -33,6 +33,7 @@ class Personality:
         
         # Load Knowledge Base
         self.knowledge = []
+        self.kb_path = ""
         kb_file = "pica_knowledge_base.json" if self.name == "Erebor.PICA" else "west_knowledge_base.json"
         kb_paths = [
             kb_file,
@@ -45,9 +46,16 @@ class Personality:
                 try:
                     with open(path, "r", encoding="utf-8") as f:
                         self.knowledge = json.load(f)
+                    self.kb_path = path
                     break
                 except Exception as e:
                     print(f"Error loading knowledge base {kb_file}: {e}")
+                    
+        # Initialize Vector Search
+        from .vector_search import VectorSearch
+        self.vector_search = None
+        if self.kb_path:
+            self.vector_search = VectorSearch(kb_file=self.kb_path, name=self.name)
         
         # Build base prompt dynamically from config
         if self.name == "Erebor.PICA":
@@ -105,22 +113,24 @@ class Personality:
 
     def get_matching_knowledge(self, query: str) -> str:
         """
-        Scans the query for keywords and returns matching database facts as structured context.
+        Retrieves matching database facts using vector search.
         """
         if not query or not self.knowledge:
             return ""
             
+        if self.vector_search:
+            return self.vector_search.get_matching_knowledge(query, self.knowledge)
+            
+        # Fallback to keyword matching
         query_cleaned = query.lower().replace("?", " ").replace(".", " ").replace(",", " ")
         query_words = set(query_cleaned.split())
-        
         matched_facts = []
         for entry in self.knowledge:
             keywords = entry.get("keywords", [])
             if any(kw.lower() in query_words for kw in keywords):
                 matched_facts.append(entry.get("fact"))
-                
         if matched_facts:
-            return "\n".join([f"- {fact}" for fact in matched_facts])
+            return "\n".join([f"- {fact}" for fact in matched_facts[:3]])
         return ""
 
     def get_system_prompt(self, context: str = "", sensor_data: str = "", query: str = "", current_time: str = "") -> str:

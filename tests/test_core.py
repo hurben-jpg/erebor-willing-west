@@ -37,9 +37,9 @@ def test_memory_add_and_retrieve():
 def test_sensor_overrides():
     sensors = MockSensors()
     
-    # Default behavior (random)
+    # Default behavior (live or cached)
     temp = sensors.get_temperature()
-    assert 20.5 <= temp <= 23.5
+    assert -10.0 <= temp <= 50.0
     
     # Override behavior
     sensors.update_readings(temp=30.0, occupancy=100, light=10)
@@ -50,7 +50,7 @@ def test_sensor_overrides():
     # Clear overrides
     sensors.clear_overrides()
     temp = sensors.get_temperature()
-    assert 20.5 <= temp <= 23.5
+    assert -10.0 <= temp <= 50.0
 
 # Test Brain (Mock LLM)
 def test_brain_think_mock():

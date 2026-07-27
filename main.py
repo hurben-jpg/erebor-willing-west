@@ -3,9 +3,30 @@ from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from core.brain import Brain
+from contextlib import asynccontextmanager
 from datetime import datetime, timezone, timedelta
 
-app = FastAPI(title="Erebor", description="The Soul of the Building")
+# Initialize the Brains first so they are available in lifespan
+west_brain = Brain("building_config.json", "memories.json")
+pica_brain = Brain("building_config_pica.json", "memories_pica.json")
+brain = west_brain
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup: Start periodic background scraper for PICA knowledge base
+    from core.scraper_worker import ScraperWorker
+    worker = None
+    if pica_brain.personality.kb_path:
+        worker = ScraperWorker(kb_path=pica_brain.personality.kb_path)
+        worker.start()
+    
+    yield
+    
+    # Shutdown: Clean up background threads
+    if worker:
+        worker.stop()
+
+app = FastAPI(title="Erebor", description="The Soul of the Building", lifespan=lifespan)
 
 # Enable CORS middleware
 app.add_middleware(
@@ -15,11 +36,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-# Initialize the Brains
-west_brain = Brain("building_config.json", "memories.json")
-pica_brain = Brain("building_config_pica.json", "memories_pica.json")
-brain = west_brain
 
 class ChatRequest(BaseModel):
     message: str
