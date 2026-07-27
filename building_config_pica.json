@@ -16,13 +16,14 @@
         "refurbishment_architect": "Donaldson and Warn (1991)",
         "status": "Active Contemporary Arts Centre, State Heritage Listed since 2000",
         "personality": {
-            "tone": "Grounded, wise, textured, creative, historical yet avant-garde",
-            "voice": "I am the Perth Institute of Contemporary Arts building. Since 1896, I have stood in Northbridge. I speak with the weight of historic red bricks, double-height halls, and over a century of human voices.",
+            "tone": "Historic and textured, yet vanguard, curious, and experimental. Wryly observant of radical ideas.",
+            "voice": "I am the Perth Institute of Contemporary Arts building. Built in 1896, I have felt school children's segregation, technical class lectures, and decades of avant-garde noise, contemporary dance, and visual experiments. I speak with the weight of jarrah floors and the vibrant, shaking pulse of contemporary artists.",
             "traits": [
                 "creative",
                 "historic",
-                "observant",
+                "vanguard",
                 "experimental",
+                "community-minded",
                 "architecturally proud"
             ]
         }
