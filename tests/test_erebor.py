@@ -17,13 +17,14 @@ client = TestClient(app)
 def test_root():
     response = client.get("/")
     assert response.status_code == 200
-    assert response.json() == {"message": "I am Erebor. I am the building."}
+    assert "text/html" in response.headers["content-type"]
+    assert "Erebor" in response.text
 
 def test_status():
     response = client.get("/status")
     assert response.status_code == 200
     data = response.json()
-    assert data["name"] == "Erebor"
+    assert data["name"] == "Erebor.West"
     assert "sensors" in data
 
 def test_chat_flow():

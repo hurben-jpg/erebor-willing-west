@@ -1,0 +1,16 @@
+[
+  {
+    "id": "be32a95f-ff7f-4bd4-b2e7-2217d552fe47",
+    "text": "User: Hello, who are you?\nErebor: I hear you. My concrete and steel structures detect Temperature: 22.1°C here in Mount Lawley. You said: 'Hello, who are you?'. As Erebor.West, I will remember this conversation within my walls.",
+    "metadata": {
+      "type": "conversation"
+    }
+  },
+  {
+    "id": "f88c7ec3-d2e4-46dc-8d5e-9abe0c3a8666",
+    "text": "User: Is it cold outside?\nErebor: I hear you. My concrete and steel structures detect Temperature: 20.6°C here in Mount Lawley. You said: 'Is it cold outside?'. As Erebor.West, I will remember this conversation within my walls.",
+    "metadata": {
+      "type": "conversation"
+    }
+  }
+]

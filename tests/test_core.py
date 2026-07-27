@@ -14,30 +14,24 @@ from sensors.mock_sensors import MockSensors
 
 # Test Memory
 def test_memory_add_and_retrieve():
-    # Use a temporary directory for testing
-    test_db_path = "./test_chroma_db"
-    if os.path.exists(test_db_path):
-        shutil.rmtree(test_db_path)
+    # Use a temporary file for testing
+    test_file_path = "./test_memories.json"
+    if os.path.exists(test_file_path):
+        os.remove(test_file_path)
         
-    memory = Memory(persist_directory=test_db_path)
-    
-    # Configure mock to return data
-    mock_collection = memory.collection
-    mock_collection.query.return_value = {
-        'documents': [["User: Hello"]]
-    }
+    memory = Memory(persist_file=test_file_path)
     
     # Add a memory
-    memory.add_memory("User: Hello", {"type": "test"})
+    memory.add_memory("User: Hello, who are you?\nErebor: I am West Residences.", {"type": "test"})
     
     # Retrieve it
-    results = memory.get_relevant_memories("Hello")
+    results = memory.get_relevant_memories("Hello Residences")
     assert len(results) > 0
-    assert "User: Hello" in results[0]
+    assert "West Residences" in results[0]
     
     # Cleanup
-    if os.path.exists(test_db_path):
-        shutil.rmtree(test_db_path)
+    if os.path.exists(test_file_path):
+        os.remove(test_file_path)
 
 # Test Sensors
 def test_sensor_overrides():
